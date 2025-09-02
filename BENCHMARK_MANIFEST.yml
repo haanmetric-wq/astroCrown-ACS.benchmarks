@@ -1,0 +1,64 @@
+version: 0.1
+description: >
+  Manifest of benchmark protocols, comparator configs, and ranking outputs for AstroCrown ACS.
+  Each entry links to exact core/data/governance/results tags for strict reproducibility.
+
+defaults:
+  tags:
+    core_tag: "v0.1.0-core-scaffold"
+    data_tag: "v0.1.0-data-scaffold"
+    governance_tag: "v0.1.0-governance-scaffold"
+    results_tag: "v0.1.0-results-scaffold"
+
+protocols:
+  - id: "benchmark_v0_1"
+    file: "protocols/benchmark_v0_1.md"
+    summary: >
+      Mission-first evaluation order (tiers), scenario folds, metrics, and how public weights are derived
+      from mission ranking (not the other way around).
+    depends_on:
+      core_tag: "v0.1.0-core-scaffold"
+      data_tag: "v0.1.0-data-scaffold"
+      governance_tag: "v0.1.0-governance-scaffold"
+
+comparators:
+  - name: "GBM_baseline"
+    config: "comparators/gbm_baseline.yml"
+    notes: "Geometric Brownian Motion baseline comparator."
+  - name: "Merton_JD"
+    config: "comparators/merton_jd.yml"
+    notes: "Jump-Diffusion with Poisson jump component."
+  - name: "GARCH_11"
+    config: "comparators/garch_11.yml"
+    notes: "Conditional heteroskedastic volatility comparator."
+  - name: "Regime_Switching"
+    config: "comparators/regime_switching.yml"
+    notes: "Two-state Markov switching drift/vol comparator."
+
+weight_sets:
+  - id: "public_weights_v0_1"
+    method: "derive_from_mission_ranking"
+    constraints: "nonnegative, sum_to_one"
+    stability_checks:
+      - "scenario_folds"
+      - "time_splits"
+
+runs:
+  - run_id: "run_0001"
+    date: "2025-09-01"
+    protocol_id: "benchmark_v0_1"
+    scenario_set: ["baseline", "stress:jump_cluster", "liquidity_drought"]
+    seed: 20250901
+    paths_per_model: 50000
+    tags:
+      core_tag: "v0.1.0-core-scaffold"
+      data_tag: "v0.1.0-data-scaffold"
+      governance_tag: "v0.1.0-governance-scaffold"
+      results_tag: "v0.1.0-results-scaffold"
+    comparators_used: ["GBM_baseline", "Merton_JD", "GARCH_11", "Regime_Switching"]
+    weight_set_id: "public_weights_v0_1"
+    outputs:
+      rankings_table: "rankings/run_0001_rankings.csv"
+      stability_bands: "stability_bands/run_0001_bands.csv"
+    notes: >
+      Placeholder run entry; replace once comparator configs and protocol file are added.
