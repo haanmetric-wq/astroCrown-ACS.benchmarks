@@ -50,11 +50,7 @@ runs:
     scenario_set: ["baseline", "stress:jump_cluster", "liquidity_drought"]
     seed: 20250901
     paths_per_model: 50000
-    tags:
-      core_tag: "v0.1.0-core-scaffold"
-      data_tag: "v0.1.0-data-scaffold"
-      governance_tag: "v0.1.0-governance-scaffold"
-      results_tag: "v0.1.0-results-scaffold"
+
     comparators_used: ["GBM_baseline", "Merton_JD", "GARCH_11", "Regime_Switching"]
     weight_set_id: "public_weights_v0_1"
     outputs:
